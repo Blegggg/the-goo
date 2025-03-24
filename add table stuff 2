@@ -1,0 +1,20 @@
+# Function to add a new user
+def add_user():
+    new_name = name_entry.get().strip()
+    new_age = age_entry.get().strip()
+    new_email = email_entry.get().strip()
+ 
+    if not new_name:
+        messagebox.showerror("Error", "Name cannot be empty!")
+        return
+ 
+    try:
+        cursor.execute("INSERT INTO users (name, age, email) VALUES (?, ?, ?)",
+                       (new_name, new_age if new_age else None, new_email if new_email else None))
+        conn.commit()
+        messagebox.showinfo("Success", f"Added user: {new_name}")
+        name_entry.delete(0, tk.END)
+        age_entry.delete(0, tk.END)
+        email_entry.delete(0, tk.END)
+    except Exception as e:
+        messagebox.showerror("Error", f"Database error: {e}")
