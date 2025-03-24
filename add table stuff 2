@@ -1,4 +1,4 @@
-# Function to add a new user
+# add stuff to table
 def add_user():
     new_name = name_entry.get().strip()
     new_age = age_entry.get().strip()
