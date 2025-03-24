@@ -1,9 +1,9 @@
-# Create GUI
+# GUI
 root = tk.Tk()
 root.title("Sign Up")
 root.configure(bg="white")
  
-# Set window size and center the window for phone-sized screen (360x640)
+# Set window size 
 root.geometry("360x640")
 root.resizable(False, False)
  
