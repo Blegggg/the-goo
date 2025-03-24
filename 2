@@ -1,0 +1,51 @@
+# Validation functions for user input
+def validate_name(name):
+    """Check if the name contains only letters"""
+    return bool(re.match(r"^[A-Za-z]+$", name))
+
+def validate_email(email):
+    """Check if the email format is correct"""
+    return bool(re.match(r"[^@]+@[^@]+\.[^@]+", email))
+
+def validate_user_input(name, password, email, is_registration=True):
+    """Check if user input is valid and return any error messages"""
+    if is_registration:  # Only check the name during registration
+        if not name:
+            return "Name is required."
+        if not validate_name(name):
+            return "Name can only contain letters."
+
+    if not password:
+        return "Password is required!"
+    if len(password) < 6:
+        return "Password must be at least 6 characters long."
+    if not validate_email(email):
+        return "Invalid email format."
+
+    if is_registration:
+        cursor.execute("SELECT * FROM users WHERE email = ?", (email,))
+        if cursor.fetchone():
+            return "Email is already registered. Try another one."
+    
+    return None  # No issues with the input
+
+# Register a new user
+def register_user():
+    user_name = name_entry.get().strip()
+    user_password = password_entry.get().strip()
+    user_email = email_entry.get().strip()
+
+    # Validate the registration inputs
+    error_message = validate_user_input(user_name, user_password, user_email, is_registration=True)
+    if error_message:
+        display_error("Error", error_message)
+        return
+
+    try:
+        cursor.execute("INSERT INTO users (name, password, email) VALUES (?, ?, ?)", 
+                       (user_name, user_password, user_email))
+        connection.commit()
+        display_message("Success!", f"Welcome, {user_name}! You are successfully registered.")
+        reset_input_fields()
+    except Exception as e:
+        display_error("Error", f"An error occurred: {e}")
