@@ -1,0 +1,9 @@
+def toggle_font_size():
+    global font_size
+    if font_size == "small":
+        font_size = "large"
+        update_font_size("16")
+    else:
+        font_size = "small"
+        update_font_size("12")
+ 
