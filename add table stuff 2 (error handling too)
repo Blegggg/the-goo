@@ -4,9 +4,22 @@ def add_user():
     new_age = age_entry.get().strip()
     new_email = email_entry.get().strip()
  
-    if not new_name:
+       if not new_name:
         messagebox.showerror("Error", "Name cannot be empty!")
         return
+    if not re.match(r"^[A-Za-z]+$", new_name):
+        messagebox.showerror("Error", "Name can only contain letters!")
+        return
+    if not new_password:
+        messagebox.showerror("Error", "Password cannot be empty!")
+        return
+    if len(new_password) < 6:
+        messagebox.showerror("Error", "Password must be at least 6 characters long!")
+        return
+    if not re.match(r"[^@]+@[^@]+\.[^@]+", new_email):
+        messagebox.showerror("Error", "Invalid email format!")
+        return
+
  
     try:
         cursor.execute("INSERT INTO users (name, age, email) VALUES (?, ?, ?)",
