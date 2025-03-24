@@ -1,0 +1,11 @@
+# Green button can be changed however needed
+add_button = tk.Button(frame, text="Sign Up", command=add_user, bg="green", fg="white", font=("Arial", 12, "bold"), width=15)
+add_button.grid(row=7, columnspan=2, pady=20)
+ 
+# buttons here could be put and used anywhere
+high_contrast_button = tk.Button(root, text="High Contrast", command=toggle_high_contrast, bg="green", fg="white", font=("Arial", 10), width=12, height=2)
+high_contrast_button.place(x=10, y=550)
+ 
+font_size_button = tk.Button(root, text="Font Size", command=toggle_font_size, bg="green", fg="white", font=("Arial", 10), width=12, height=2)
+font_size_button.place(x=10, y=590)
+ 
