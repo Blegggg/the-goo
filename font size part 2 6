@@ -10,3 +10,4 @@ def update_font_size(size):
     high_contrast_button.configure(font=("Arial", size))
     font_size_button.configure(font=("Arial", size))
  
+# put any fonts needed experimental
