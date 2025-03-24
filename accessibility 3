@@ -1,0 +1,20 @@
+# Toggle High Contrast Mode
+def toggle_high_contrast():
+    if root.cget('bg') == 'white':
+        root.configure(bg='black')
+        frame.configure(bg='black')
+        title_label.configure(bg='black', fg='white')
+
+        name_label.configure(bg='black', fg='white')
+        age_label.configure(bg='black', fg='white')
+        email_label.configure(bg='black', fg='white')
+        
+        name_entry.configure(bg='black', fg='white')
+        age_entry.configure(bg='black', fg='white')
+        email_entry.configure(bg='black', fg='white')
+        
+        # Update button for high contrast mode
+        add_button.configure(bg='white', fg='black')
+        high_contrast_button.configure(bg='white', fg='black')
+        font_size_button.configure(bg='white', fg='black')
+ 
