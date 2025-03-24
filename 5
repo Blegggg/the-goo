@@ -1,0 +1,57 @@
+# Open settings window to change preferences
+def open_settings():
+    settings_window = tk.Toplevel(root)
+    settings_window.title("Settings")
+    settings_window.geometry("300x200")
+    settings_window.configure(bg="white")
+
+    settings_label = tk.Label(settings_window, text="Settings", font=("Arial", 18, "bold"), bg="white", fg="green")
+    settings_label.pack(pady=20)
+
+    font_button = tk.Button(settings_window, text="Toggle Font Size", command=toggle_font_size, bg="green", fg="white", font=("Arial", 10))
+    font_button.pack(pady=10)
+
+    contrast_button = tk.Button(settings_window, text="Toggle High Contrast", command=toggle_high_contrast, bg="green", fg="white", font=("Arial", 10))
+    contrast_button.pack(pady=10)
+
+# Set up the main GUI window
+root = tk.Tk()
+root.title("User Authentication")
+root.configure(bg="white")
+root.geometry("400x500")
+
+main_frame = tk.Frame(root, bg="white")
+main_frame.place(relx=0.5, rely=0.4, anchor="center")
+
+title = tk.Label(main_frame, text="Sign Up", font=("Arial", 18, "bold"), bg="white", fg="green")
+title.grid(row=0, columnspan=2, pady=10)
+
+name_label = tk.Label(main_frame, text="Name", font=("Arial", 12), bg="white")
+name_label.grid(row=1, column=0, padx=10, pady=5, sticky="w")
+name_entry = tk.Entry(main_frame, font=("Arial", 12))
+name_entry.grid(row=2, column=0, padx=10, pady=5)
+
+password_label = tk.Label(main_frame, text="Password", font=("Arial", 12), bg="white")
+password_label.grid(row=3, column=0, padx=10, pady=5, sticky="w")
+password_entry = tk.Entry(main_frame, font=("Arial", 12), show="*")
+password_entry.grid(row=4, column=0, padx=10, pady=5)
+
+email_label = tk.Label(main_frame, text="Email", font=("Arial", 12), bg="white")
+email_label.grid(row=5, column=0, padx=10, pady=5, sticky="w")
+email_entry = tk.Entry(main_frame, font=("Arial", 12))
+email_entry.grid(row=6, column=0, padx=10, pady=5)
+
+signup_button = tk.Button(main_frame, text="Sign Up", command=register_user, bg="green", fg="white", font=("Arial", 12, "bold"))
+signup_button.grid(row=7, columnspan=2, pady=10)
+
+login_button = tk.Button(main_frame, text="Login", command=login_user, bg="blue", fg="white", font=("Arial", 12, "bold"))
+login_button.grid(row=8, columnspan=2, pady=10)
+
+settings_button = tk.Button(root, text="Settings", command=open_settings, bg="green", fg="white", font=("Arial", 12))
+settings_button.place(x=10, y=10)
+
+# Run the GUI loop
+root.mainloop()
+
+# Close the database connection when the app closes
+connection.close()
