@@ -1,0 +1,9 @@
+# Set default font size can be changed depending on what is needed
+font_size = "small"
+update_font_size("12")
+ 
+# Run the GUI
+root.mainloop()
+ 
+# Close DB connection when the GUI is closed
+conn.close()
