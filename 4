@@ -1,0 +1,44 @@
+# Open the dashboard after successful login
+def open_dashboard():
+    root.destroy()
+
+    dashboard = tk.Tk()
+    dashboard.title("Dashboard")
+    dashboard.geometry("400x300")
+    
+    label = tk.Label(dashboard, text="You are logged in!", font=("Arial", 16, "bold"))
+    label.pack(pady=20)
+
+    dashboard.mainloop()
+
+# Toggle high contrast mode for better accessibility
+def toggle_high_contrast():
+    current_bg = root.cget('bg')
+    
+    if current_bg == 'white':
+        apply_high_contrast_theme('black', 'white')
+    else:
+        apply_high_contrast_theme('white', 'green')
+
+# Apply high contrast theme to the app
+def apply_high_contrast_theme(bg_color, text_color):
+    root.configure(bg=bg_color)
+    main_frame.configure(bg=bg_color)
+
+    for widget in [title, name_label, password_label, email_label, name_entry, password_entry, email_entry, signup_button, login_button]:
+        widget.configure(bg=bg_color, fg=text_color)
+
+# Toggle between small and large font sizes
+def toggle_font_size():
+    global font_size
+    if font_size == "small":
+        font_size = "large"
+        change_font_size("16")
+    else:
+        font_size = "small"
+        change_font_size("12")
+
+# Update font size across the UI
+def change_font_size(size):
+    for widget in [title, name_label, password_label, email_label, name_entry, password_entry, email_entry, signup_button, login_button, settings_button]:
+        widget.configure(font=("Arial", size))
