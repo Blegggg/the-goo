@@ -1,0 +1,12 @@
+def update_font_size(size):
+    name_label.configure(font=("Arial", size))
+    age_label.configure(font=("Arial", size))
+    email_label.configure(font=("Arial", size))
+    title_label.configure(font=("Arial", size, "bold"))
+    name_entry.configure(font=("Arial", size))
+    age_entry.configure(font=("Arial", size))
+    email_entry.configure(font=("Arial", size))
+    add_button.configure(font=("Arial", size, "bold"))
+    high_contrast_button.configure(font=("Arial", size))
+    font_size_button.configure(font=("Arial", size))
+ 
