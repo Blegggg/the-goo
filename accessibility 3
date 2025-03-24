@@ -1,4 +1,4 @@
-# Toggle High Contrast Mode
+# Toggle High Contrast Mode (accessibility feature thats easy to do)
 def toggle_high_contrast():
     if root.cget('bg') == 'white':
         root.configure(bg='black')
