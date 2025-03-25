@@ -1,44 +1,42 @@
-# Open the dashboard after successful login
-def open_dashboard():
-    root.destroy()
+# Open the homepage after successful login
+def open_homepage():
+    # Hide the login/signup window and open the homepage
+    root.withdraw()  # Hide the login window
 
-    dashboard = tk.Tk()
-    dashboard.title("Dashboard")
-    dashboard.geometry("400x300")
+    homepage = tk.Tk()
+    homepage.title("Homepage")
+    homepage.geometry("400x500")
     
-    label = tk.Label(dashboard, text="You are logged in!", font=("Arial", 16, "bold"))
+    label = tk.Label(homepage, text="Welcome to the Homepage!", font=("Arial", 16, "bold"))
     label.pack(pady=20)
 
-    dashboard.mainloop()
+    # Add buttons for different pages
+    carbon_button = tk.Button(homepage, text="Carbon Footprint", command=open_carbon_page, bg="green", fg="white", font=("Arial", 12))
+    carbon_button.pack(pady=10)
 
-# Toggle high contrast mode for better accessibility
-def toggle_high_contrast():
-    current_bg = root.cget('bg')
-    
-    if current_bg == 'white':
-        apply_high_contrast_theme('black', 'white')
-    else:
-        apply_high_contrast_theme('white', 'green')
+    info_button = tk.Button(homepage, text="Information", command=open_info_page, bg="green", fg="white", font=("Arial", 12))
+    info_button.pack(pady=10)
 
-# Apply high contrast theme to the app
-def apply_high_contrast_theme(bg_color, text_color):
-    root.configure(bg=bg_color)
-    main_frame.configure(bg=bg_color)
+    energy_button = tk.Button(homepage, text="Energy Usage Calculator", command=open_energy_calculator, bg="green", fg="white", font=("Arial", 12))
+    energy_button.pack(pady=10)
 
-    for widget in [title, name_label, password_label, email_label, name_entry, password_entry, email_entry, signup_button, login_button]:
-        widget.configure(bg=bg_color, fg=text_color)
+    logout_button = tk.Button(homepage, text="Logout", command=lambda: open_login_page(homepage), bg="red", fg="white", font=("Arial", 12))
+    logout_button.pack(pady=10)
 
-# Toggle between small and large font sizes
-def toggle_font_size():
-    global font_size
-    if font_size == "small":
-        font_size = "large"
-        change_font_size("16")
-    else:
-        font_size = "small"
-        change_font_size("12")
+    # Add bottom navigation bar to resemble phone app
+    bottom_nav = tk.Frame(homepage, bg="green")
+    bottom_nav.pack(side="bottom", fill="x", pady=10)
 
-# Update font size across the UI
-def change_font_size(size):
-    for widget in [title, name_label, password_label, email_label, name_entry, password_entry, email_entry, signup_button, login_button, settings_button]:
-        widget.configure(font=("Arial", size))
+    button1 = tk.Button(bottom_nav, text="Home", command=open_homepage, bg="green", fg="white")
+    button1.pack(side="left", expand=True)
+
+    button2 = tk.Button(bottom_nav, text="Carbon", command=open_carbon_page, bg="green", fg="white")
+    button2.pack(side="left", expand=True)
+
+    button3 = tk.Button(bottom_nav, text="Info", command=open_info_page, bg="green", fg="white")
+    button3.pack(side="left", expand=True)
+
+    button4 = tk.Button(bottom_nav, text="Energy", command=open_energy_calculator, bg="green", fg="white")
+    button4.pack(side="left", expand=True)
+
+    homepage.mainloop()
