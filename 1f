@@ -1,0 +1,35 @@
+# Main GUI
+root = tk.Tk()
+root.title("User Authentication")
+root.geometry("400x500")
+
+main_frame = tk.Frame(root)
+main_frame.pack()
+
+title = tk.Label(main_frame, text="Sign Up", font=("Arial", 18, "bold"))
+title.pack()
+
+name_label = tk.Label(main_frame, text="Name")
+name_label.pack()
+name_entry = tk.Entry(main_frame)
+name_entry.pack()
+
+password_label = tk.Label(main_frame, text="Password")
+password_label.pack()
+password_entry = tk.Entry(main_frame, show="*")
+password_entry.pack()
+
+email_label = tk.Label(main_frame, text="Email")
+email_label.pack()
+email_entry = tk.Entry(main_frame)
+email_entry.pack()
+
+signup_button = tk.Button(main_frame, text="Sign Up", command=register_user)
+signup_button.pack()
+
+login_button = tk.Button(main_frame, text="Login", command=login_user)
+login_button.pack()
+
+root.mainloop()
+
+connection.close()
