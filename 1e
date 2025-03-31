@@ -1,0 +1,37 @@
+def open_info_page():
+    page = tk.Tk()
+    page.title("Information")
+    label = tk.Label(page, text="Information Page", font=("Arial", 16, "bold"))
+    label.pack(pady=20)
+    page.mainloop()
+
+def open_energy_calculator():
+    page = tk.Tk()
+    page.title("Energy Usage Calculator")
+    label = tk.Label(page, text="Energy Usage Calculator Page", font=("Arial", 16, "bold"))
+    label.pack(pady=20)
+    page.mainloop()
+
+# Toggle high contrast mode
+def toggle_high_contrast():
+    current_bg = root.cget('bg')
+    new_bg = 'black' if current_bg == 'white' else 'white'
+    new_fg = 'white' if current_bg == 'white' else 'black'
+    apply_high_contrast_theme(new_bg, new_fg)
+
+def apply_high_contrast_theme(bg_color, text_color):
+    root.configure(bg=bg_color)
+    main_frame.configure(bg=bg_color)
+    for widget in [title, name_label, password_label, email_label, name_entry, password_entry, email_entry, signup_button, login_button]:
+        widget.configure(bg=bg_color, fg=text_color)
+
+# Toggle font size
+def toggle_font_size():
+    global font_size
+    font_size = "large" if font_size == "small" else "small"
+    new_size = "16" if font_size == "large" else "12"
+    change_font_size(new_size)
+
+def change_font_size(size):
+    for widget in [title, name_label, password_label, email_label, name_entry, password_entry, email_entry, signup_button, login_button]:
+        widget.configure(font=("Arial", size))
