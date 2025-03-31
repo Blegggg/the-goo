@@ -1,0 +1,41 @@
+# Toggle Font Size
+def toggle_font_size():
+    global font_size
+    font_size = "16" if font_size == "12" else "12"
+    for widget in [title, name_label, password_label, email_label, name_entry, password_entry, email_entry, signup_button, login_button]:
+        widget.configure(font=("Arial", font_size))
+
+# Main Login Window
+root = tk.Tk()
+root.title("User Authentication")
+root.geometry("300x640")
+
+main_frame = tk.Frame(root)
+main_frame.pack()
+
+title = tk.Label(main_frame, text="Sign Up", font=("Arial", 18, "bold"))
+title.pack()
+
+name_label = tk.Label(main_frame, text="Name")
+name_label.pack()
+name_entry = tk.Entry(main_frame)
+name_entry.pack()
+
+password_label = tk.Label(main_frame, text="Password")
+password_label.pack()
+password_entry = tk.Entry(main_frame, show="*")
+password_entry.pack()
+
+email_label = tk.Label(main_frame, text="Email")
+email_label.pack()
+email_entry = tk.Entry(main_frame)
+email_entry.pack()
+
+signup_button = tk.Button(main_frame, text="Sign Up", command=register_user)
+signup_button.pack()
+
+login_button = tk.Button(main_frame, text="Login", command=login_user)
+login_button.pack()
+
+root.mainloop()
+connection.close()
