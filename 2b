@@ -1,0 +1,54 @@
+# Validate user input
+def validate_user_input(name, password, email, is_registration=True):
+    if is_registration and not name.isalpha():
+        return "Name can only contain letters."
+    if len(password) < 6:
+        return "Password must be at least 6 characters long."
+    if "@" not in email or "." not in email:
+        return "Invalid email format."
+    
+    if is_registration:
+        cursor.execute("SELECT * FROM users WHERE email = ?", (email,))
+        if cursor.fetchone():
+            return "Email already registered."
+    
+    return None
+
+# Register a new user
+def register_user():
+    name, password, email = name_entry.get().strip(), password_entry.get().strip(), email_entry.get().strip()
+    error = validate_user_input(name, password, email, True)
+    
+    if error:
+        messagebox.showerror("Error", error)
+        return
+
+    try:
+        cursor.execute("INSERT INTO users (name, password, email) VALUES (?, ?, ?)", (name, password, email))
+        connection.commit()
+        messagebox.showinfo("Success", "Registered successfully!")
+        reset_input_fields()
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred: {e}")
+
+# Login user
+def login_user():
+    email, password = email_entry.get().strip(), password_entry.get().strip()
+    error = validate_user_input("", password, email, False)
+
+    if error:
+        messagebox.showerror("Error", error)
+        return
+
+    cursor.execute("SELECT * FROM users WHERE email = ? AND password = ?", (email, password))
+    if cursor.fetchone():
+        messagebox.showinfo("Success", "Login successful!")
+        open_homepage()
+    else:
+        messagebox.showerror("Error", "Incorrect email or password.")
+
+# Reset input fields
+def reset_input_fields():
+    name_entry.delete(0, tk.END)
+    password_entry.delete(0, tk.END)
+    email_entry.delete(0, tk.END)
