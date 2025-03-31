@@ -1,0 +1,66 @@
+# Validation functions
+def validate_name(name):
+    return bool(re.match(r"^[A-Za-z]+$", name))
+
+def validate_email(email):
+    return bool(re.match(r"[^@]+@[^@]+\.[^@]+", email))
+
+def validate_user_input(name, password, email, is_registration=True):
+    if is_registration:
+        if not name:
+            return "Name is required."
+        if not validate_name(name):
+            return "Name can only contain letters."
+    
+    if not password or len(password) < 6:
+        return "Password must be at least 6 characters long."
+    
+    if not validate_email(email):
+        return "Invalid email format."
+
+    if is_registration:
+        cursor.execute("SELECT * FROM users WHERE email = ?", (email,))
+        if cursor.fetchone():
+            return "Email is already registered. Try another one."
+    
+    return None
+
+# Register a new user
+def register_user():
+    user_name = name_entry.get().strip()
+    user_password = password_entry.get().strip()
+    user_email = email_entry.get().strip()
+
+    error_message = validate_user_input(user_name, user_password, user_email, is_registration=True)
+    if error_message:
+        display_error("Error", error_message)
+        return
+
+    try:
+        cursor.execute("INSERT INTO users (name, password, email) VALUES (?, ?, ?)", 
+                       (user_name, user_password, user_email))
+        connection.commit()
+        display_message("Success!", f"Welcome, {user_name}! You are successfully registered.")
+        reset_input_fields()
+    except Exception as e:
+        display_error("Error", f"An error occurred: {e}")
+
+# User login handler
+def login_user():
+    user_email = email_entry.get().strip()
+    user_password = password_entry.get().strip()
+
+    error_message = validate_user_input("", user_password, user_email, is_registration=False)
+    if error_message:
+        display_error("Error", error_message)
+        return
+
+    cursor.execute("SELECT * FROM users WHERE email = ? AND password = ?", 
+                   (user_email, user_password))
+    user = cursor.fetchone()
+
+    if user:
+        display_message("Welcome Back!", "You are now logged in!")
+        open_homepage()
+    else:
+        display_error("Invalid Credentials", "Incorrect email or password. Please try again.")
