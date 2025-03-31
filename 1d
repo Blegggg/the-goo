@@ -1,0 +1,66 @@
+ # Carbon Footprint Inputs
+    electric_bill_label = tk.Label(page, text="Monthly Electric Bill (£):")
+    electric_bill_label.pack()
+    electric_bill_entry = tk.Entry(page)
+    electric_bill_entry.pack()
+
+    gas_bill_label = tk.Label(page, text="Monthly Gas Bill (£):")
+    gas_bill_label.pack()
+    gas_bill_entry = tk.Entry(page)
+    gas_bill_entry.pack()
+
+    oil_bill_label = tk.Label(page, text="Monthly Oil Bill (£):")
+    oil_bill_label.pack()
+    oil_bill_entry = tk.Entry(page)
+    oil_bill_entry.pack()
+
+    car_mileage_label = tk.Label(page, text="Yearly Car Mileage (miles):")
+    car_mileage_label.pack()
+    car_mileage_entry = tk.Entry(page)
+    car_mileage_entry.pack()
+
+    flights_short_label = tk.Label(page, text="Number of short flights (4 hours or less) taken this year:")
+    flights_short_label.pack()
+    flights_short_entry = tk.Entry(page)
+    flights_short_entry.pack()
+
+    flights_long_label = tk.Label(page, text="Number of long flights (more than 4 hours) taken this year:")
+    flights_long_label.pack()
+    flights_long_entry = tk.Entry(page)
+    flights_long_entry.pack()
+
+    recycle_newspaper_label = tk.Label(page, text="Do you recycle newspaper? (yes/no):")
+    recycle_newspaper_label.pack()
+    recycle_newspaper_entry = tk.Entry(page)
+    recycle_newspaper_entry.pack()
+
+    recycle_aluminum_label = tk.Label(page, text="Do you recycle aluminum and tin? (yes/no):")
+    recycle_aluminum_label.pack()
+    recycle_aluminum_entry = tk.Entry(page)
+    recycle_aluminum_entry.pack()
+
+    # Calculate button
+    def calculate_carbon_footprint():
+        try:
+            electric_bill_val = float(electric_bill_entry.get()) * 105
+            gas_bill_val = float(gas_bill_entry.get()) * 105
+            oil_bill_val = float(oil_bill_entry.get()) * 113
+            car_mileage_val = float(car_mileage_entry.get()) * 0.79
+            flights_short_val = int(flights_short_entry.get()) * 1100
+            flights_long_val = int(flights_long_entry.get()) * 4400
+
+            recycle_newspaper_val = 184 if recycle_newspaper_entry.get().strip().lower() != "yes" else 0
+            recycle_aluminum_val = 166 if recycle_aluminum_entry.get().strip().lower() != "yes" else 0
+
+            total_footprint = electric_bill_val + gas_bill_val + oil_bill_val + car_mileage_val + flights_short_val + flights_long_val + recycle_newspaper_val + recycle_aluminum_val
+            result_label.config(text=f"Your estimated carbon footprint is: {total_footprint:.2f} kg CO2")
+        except ValueError:
+            result_label.config(text="Please enter valid numbers in all fields.")
+
+    calculate_button = tk.Button(page, text="Calculate Carbon Footprint", command=calculate_carbon_footprint)
+    calculate_button.pack()
+
+    result_label = tk.Label(page, text="Your estimated carbon footprint will appear here.")
+    result_label.pack()
+
+    page.mainloop()
