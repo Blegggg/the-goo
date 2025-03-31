@@ -1,0 +1,76 @@
+# Open Homepage
+def open_homepage():
+    root.withdraw()
+    homepage = tk.Toplevel()
+    homepage.title("Homepage")
+    homepage.geometry("300x640")
+    
+    tk.Label(homepage, text="Welcome to the Homepage!", font=("Arial", 16, "bold")).pack(pady=10)
+
+    tk.Button(homepage, text="Carbon Footprint", command=open_carbon_page, bg="lightgreen").pack(pady=5)
+    tk.Button(homepage, text="Information", command=open_info_page, bg="lightgreen").pack(pady=5)
+    tk.Button(homepage, text="Energy Calculator", command=open_energy_calculator, bg="lightgreen").pack(pady=5)
+    tk.Button(homepage, text="Logout", command=lambda: return_to_login(homepage), bg="red", fg="white").pack(pady=5)
+    tk.Button(homepage, text="Settings", command=open_settings_page, bg="lightgreen").pack(pady=5)
+
+# Open Information Page
+def open_info_page():
+    page = tk.Toplevel()
+    page.title("Information")
+    page.geometry("300x640")
+
+    tk.Label(page, text="Information Page", font=("Arial", 16, "bold")).pack(pady=10)
+
+    tk.Button(page, text="Topic 1", command=lambda: show_info(page, "Placeholder info for topic 1"), bg="lightgreen").pack(pady=5)
+    tk.Button(page, text="Topic 2", command=lambda: show_info(page, "Placeholder info for topic 2"), bg="lightgreen").pack(pady=5)
+    tk.Button(page, text="Topic 3", command=lambda: show_info(page, "Placeholder info for topic 3"), bg="lightgreen").pack(pady=5)
+
+    tk.Button(page, text="Back", command=page.destroy, bg="lightgreen").pack(pady=10)
+
+def show_info(page, info):
+    tk.Label(page, text=info, font=("Arial", 12), wraplength=250).pack(pady=10)
+
+# Open Carbon Footprint Page
+def open_carbon_page():
+    page = tk.Toplevel()
+    page.title("Carbon Footprint")
+    page.geometry("300x640")
+
+    tk.Label(page, text="Carbon Footprint Page", font=("Arial", 16, "bold")).pack(pady=10)
+
+    tk.Button(page, text="Back", command=page.destroy, bg="lightgreen").pack(pady=10)
+
+# Open Energy Usage Calculator
+def open_energy_calculator():
+    page = tk.Toplevel()
+    page.title("Energy Usage Calculator")
+    page.geometry("300x640")
+
+    tk.Label(page, text="Energy Usage Calculator", font=("Arial", 16, "bold")).pack(pady=10)
+
+    tk.Button(page, text="Back", command=page.destroy, bg="lightgreen").pack(pady=10)
+
+# Open Settings Page
+def open_settings_page():
+    page = tk.Toplevel()
+    page.title("Settings")
+    page.geometry("300x640")
+
+    tk.Button(page, text="Toggle High Contrast", command=toggle_high_contrast, bg="lightgreen").pack(pady=5)
+    tk.Button(page, text="Toggle Font Size", command=toggle_font_size, bg="lightgreen").pack(pady=5)
+    tk.Button(page, text="Back", command=page.destroy, bg="lightgreen").pack(pady=10)
+
+# Return to Login Page
+def return_to_login(current_window):
+    current_window.destroy()
+    root.deiconify()
+
+# High Contrast Mode
+def toggle_high_contrast():
+    bg_color = "black" if root.cget('bg') == "white" else "white"
+    fg_color = "white" if bg_color == "black" else "black"
+    
+    root.configure(bg=bg_color)
+    main_frame.configure(bg=bg_color)
+    for widget in [title, name_label, password_label, email_label, name_entry, password_entry, email_entry, signup_button, login_button]:
+        widget.configure(bg=bg_color, fg=fg_color)
