@@ -1,0 +1,47 @@
+# Utility functions
+def display_error(title, message):
+    messagebox.showerror(title, message)
+
+def display_message(title, message):
+    messagebox.showinfo(title, message)
+
+def reset_input_fields():
+    name_entry.delete(0, tk.END)
+    password_entry.delete(0, tk.END)
+    email_entry.delete(0, tk.END)
+
+# Open homepage
+def open_homepage():
+    root.withdraw()  # Hide login window
+    homepage = tk.Tk()
+    homepage.title("Homepage")
+    homepage.geometry("400x500")
+
+    label = tk.Label(homepage, text="Welcome to the Homepage!", font=("Arial", 16, "bold"))
+    label.pack(pady=20)
+
+    carbon_button = tk.Button(homepage, text="Carbon Footprint", command=open_carbon_page, bg="green", fg="white", font=("Arial", 12))
+    carbon_button.pack(pady=10)
+
+    info_button = tk.Button(homepage, text="Information", command=open_info_page, bg="green", fg="white", font=("Arial", 12))
+    info_button.pack(pady=10)
+
+    energy_button = tk.Button(homepage, text="Energy Usage Calculator", command=open_energy_calculator, bg="green", fg="white", font=("Arial", 12))
+    energy_button.pack(pady=10)
+
+    logout_button = tk.Button(homepage, text="Logout", command=lambda: open_login_page(homepage), bg="red", fg="white", font=("Arial", 12))
+    logout_button.pack(pady=10)
+
+    homepage.mainloop()
+
+# Open login page again
+def open_login_page(homepage):
+    homepage.destroy()
+    root.deiconify()
+
+# Placeholder pages
+def open_carbon_page():
+    page = tk.Tk()
+    page.title("Carbon Footprint")
+    label = tk.Label(page, text="Carbon Footprint Page", font=("Arial", 16, "bold"))
+    label.pack(pady=20)
