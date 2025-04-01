@@ -1,0 +1,23 @@
+# Register User
+def register_user():
+    name, password, email = name_entry.get(), password_entry.get(), email_entry.get()
+    error = validate_input(name, password, email)
+    if error:
+        messagebox.showerror("Error", error)
+        return
+    try:
+        cursor.execute("INSERT INTO users (name, password, email) VALUES (?, ?, ?)", (name, password, email))
+        db.commit()
+        messagebox.showinfo("Success", "Registered successfully!")
+    except sqlite3.IntegrityError:
+        messagebox.showerror("Error", "Email already registered.")
+
+# Login User
+def login_user():
+    email, password = email_entry.get(), password_entry.get()
+    cursor.execute("SELECT * FROM users WHERE email = ? AND password = ?", (email, password))
+    if cursor.fetchone():
+        messagebox.showinfo("Success", "Login successful!")
+        open_booking_page(email)
+    else:
+        messagebox.showerror("Error", "Incorrect email or password.")
