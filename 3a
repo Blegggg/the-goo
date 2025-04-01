@@ -1,0 +1,41 @@
+# Connect to SQLite Database
+def connect_to_db():
+    return sqlite3.connect("wa.db")
+
+db = connect_to_db()
+cursor = db.cursor()
+
+# Create tables
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    password TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL
+)
+""")
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS bookings (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_email TEXT NOT NULL,
+    booking_type TEXT NOT NULL,
+    service TEXT NOT NULL,
+    date TEXT NOT NULL,
+    time TEXT NOT NULL,
+    FOREIGN KEY (user_email) REFERENCES users(email)
+)
+""")
+db.commit()
+
+
+
+# Validate user input
+def validate_input(name, password, email):
+    if not name.isalpha():
+        return "Name can only contain letters."
+    if len(password) < 6:
+        return "Password must be at least 6 characters long."
+    if "@" not in email or "." not in email:
+        return "Invalid email format."
+    return None
