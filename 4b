@@ -1,0 +1,56 @@
+# Validate date and time format
+def verify_booking_details(date, time):
+    try:
+        day, month, year = map(int, date.split("-"))
+    except ValueError:
+        messagebox.showerror("Error", "Date must be in the format DD-MM-YYYY.")
+        return False
+
+    if year < 2025:
+        messagebox.showerror("Error", "Year must be 2025 or later.")
+        return False
+
+    try:
+        hours, minutes = map(int, time.split(":"))
+        if not (0 <= hours <= 23 and 0 <= minutes <= 59):
+            messagebox.showerror("Error", "Time must be in HH:MM format (24-hour).")
+            return False
+    except ValueError:
+        messagebox.showerror("Error", "Time must be in the format HH:MM.")
+        return False
+
+    return True
+
+# Registration and Login functions
+def validate_input(name, password, email):
+    if not name.isalpha():
+        return "Name can only contain letters."
+    if len(password) < 6:
+        return "Password must be at least 6 characters long."
+    if "@" not in email or "." not in email:
+        return "Invalid email format."
+    return None
+
+# Register User
+def register_user():
+    name, password, email = name_entry.get(), password_entry.get(), email_entry.get()
+    error = validate_input(name, password, email)
+    if error:
+        messagebox.showerror("Error", error)
+        return
+    try:
+        cursor.execute("INSERT INTO users (name, password, email) VALUES (?, ?, ?)", (name, password, email))
+        db.commit()
+        messagebox.showinfo("Success", "Registered successfully!")
+    except sqlite3.IntegrityError:
+        messagebox.showerror("Error", "Email already registered.")
+
+# Login User
+def login_user():
+    email, password = email_entry.get(), password_entry.get()
+    cursor.execute("SELECT * FROM users WHERE email = ? AND password = ?", (email, password))
+    if cursor.fetchone():
+        messagebox.showinfo("Success", "Login successful!")
+        open_booking_page(email)  # Open booking page after successful login
+    else:
+        messagebox.showerror("Error", "Incorrect email or password.")
