@@ -1,0 +1,35 @@
+# Return to Login
+def return_to_login(current_window):
+    current_window.destroy()
+    root.deiconify()
+
+# Main Login UI
+def open_login_page():
+    global root, name_entry, password_entry, email_entry
+    root = tk.Tk()  # Now root is defined globally here
+    root.title("User Authentication")
+    root.geometry("300x300")
+
+    tk.Label(root, text="Sign Up / Login").pack(pady=10)
+
+    name_entry = tk.Entry(root, width=30)
+    tk.Label(root, text="Name (for sign-up)").pack()
+    name_entry.pack()
+
+    password_entry = tk.Entry(root, width=30, show="*")
+    tk.Label(root, text="Password").pack()
+    password_entry.pack()
+
+    email_entry = tk.Entry(root, width=30)
+    tk.Label(root, text="Email").pack()
+    email_entry.pack()
+
+    tk.Button(root, text="Sign Up", command=register_user).pack(pady=5)
+    tk.Button(root, text="Login", command=login_user).pack(pady=5)
+
+    root.mainloop()
+
+# Start the application with the login page
+open_login_page()
+
+db.close()
