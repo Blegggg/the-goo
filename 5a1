@@ -1,0 +1,41 @@
+import sqlite3
+import tkinter as tk
+from tkinter import messagebox, ttk
+import re
+# from PIL import Image, ImageTk  # Commented out as requested
+
+# Connect to SQLite Database
+def connect_to_db():
+    try:
+        return sqlite3.connect("booking.db")
+    except sqlite3.Error as e:
+        messagebox.showerror("Database Error", f"Failed to connect to database: {e}")
+        return None
+
+db = connect_to_db()
+cursor = db.cursor()
+
+# Create tables
+try:
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        password TEXT NOT NULL,
+        email TEXT UNIQUE NOT NULL
+    )
+    """)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS bookings (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_email TEXT NOT NULL,
+        booking_type TEXT NOT NULL,
+        service TEXT NOT NULL,
+        date TEXT NOT NULL,
+        time TEXT NOT NULL,
+        FOREIGN KEY (user_email) REFERENCES users(email)
+    )
+    """)
+    db.commit()
+except sqlite3.Error as e:
+    messagebox.showerror("Database Error", f"Failed to create tables: {e}")
