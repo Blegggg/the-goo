@@ -1,0 +1,50 @@
+# Booking Function
+    def book_service():
+        booking_type, service, date, time = booking_type_var.get(), service_var.get(), date_entry.get(), time_entry.get()
+        if not (booking_type and service and date and time):
+            messagebox.showerror("Error", "All fields are required.")
+            return
+        try:
+            cursor.execute("INSERT INTO bookings (user_email, booking_type, service, date, time) VALUES (?, ?, ?, ?, ?)", (user_email, booking_type, service, date, time))
+            db.commit()
+            messagebox.showinfo("Success", "Booking confirmed!")
+        except sqlite3.Error as e:
+            messagebox.showerror("Database Error", f"Failed to book: {e}")
+
+    # Confirm Booking Button
+    tk.Button(booking_window, text="Confirm Booking", command=book_service).pack(pady=10)
+    tk.Button(booking_window, text="Logout", command=lambda: return_to_login(booking_window)).pack(pady=10)
+
+# Return to Login
+def return_to_login(current_window):
+    current_window.destroy()
+    root.deiconify()
+
+# Register user
+def register_user():
+    name, password, email = name_entry.get(), password_entry.get(), email_entry.get()
+    if not name.isalpha():
+        messagebox.showerror("Error", "Name must contain only letters.")
+        return
+    if len(password) < 6:
+        messagebox.showerror("Error", "Password must be at least 6 characters long.")
+        return
+    if "@" not in email or "." not in email:
+        messagebox.showerror("Error", "Invalid email format.")
+        return
+    try:
+        cursor.execute("INSERT INTO users (name, password, email) VALUES (?, ?, ?)", (name, password, email))
+        db.commit()
+        messagebox.showinfo("Success", "Registered successfully!")
+    except sqlite3.IntegrityError:
+        messagebox.showerror("Error", "Email already registered.")
+
+# Login user
+def login_user():
+    email, password = email_entry.get(), password_entry.get()
+    cursor.execute("SELECT * FROM users WHERE email = ? AND password = ?", (email, password))
+    if cursor.fetchone():
+        messagebox.showinfo("Success", "Login successful!")
+        open_booking_page(email)
+    else:
+        messagebox.showerror("Error", "Incorrect email or password.")
