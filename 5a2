@@ -1,0 +1,65 @@
+# Validate date and time format
+def verify_booking_details(date, time):
+    if not re.match(r"^\d{2}-\d{2}-\d{4}$", date):
+        messagebox.showerror("Error", "Invalid date format. Use DD-MM-YYYY.")
+        return False
+    day, month, year = map(int, date.split("-"))
+    if not (1 <= day <= 31 and 1 <= month <= 12 and year >= 2025):
+        messagebox.showerror("Error", "Enter a valid future date (from 2025).")
+        return False
+    if not re.match(r"^([01]\d|2[0-3]):([0-5]\d)$", time):
+        messagebox.showerror("Error", "Invalid time format. Use HH:MM (24-hour format).")
+        return False
+    return True
+
+# Booking Page
+def open_booking_page(user_email):
+    root.withdraw()
+    booking_window = tk.Toplevel()
+    booking_window.title("Booking Page")
+    booking_window.geometry("350x400")
+
+    tk.Label(booking_window, text="Choose Booking Type:").pack(pady=5)
+    booking_types = ["Installation", "Consultation"]
+    booking_type_var = tk.StringVar()
+    booking_type_dropdown = ttk.Combobox(booking_window, textvariable=booking_type_var, values=booking_types)
+    booking_type_dropdown.pack(pady=5)
+
+    tk.Label(booking_window, text="Choose a Service:").pack(pady=5)
+    service_var = tk.StringVar()
+    service_dropdown = ttk.Combobox(booking_window, textvariable=service_var)
+    service_dropdown.pack(pady=5)
+
+    def update_services(*args):
+        if booking_type_var.get() == "Installation":
+            service_dropdown["values"] = ["EV Charging Installation", "HEM Installation", "Other"]
+        else:
+            service_dropdown["values"] = ["General Consultation"]
+        service_var.set("")
+
+    booking_type_var.trace("w", update_services)
+
+    tk.Label(booking_window, text="Select Date (DD-MM-YYYY):").pack(pady=5)
+    date_entry = tk.Entry(booking_window)
+    date_entry.pack(pady=5)
+
+    tk.Label(booking_window, text="Select Time (HH:MM):").pack(pady=5)
+    time_entry = tk.Entry(booking_window)
+    time_entry.pack(pady=5)
+
+    def book_service():
+        booking_type, service, date, time = booking_type_var.get(), service_var.get(), date_entry.get(), time_entry.get()
+        if not (booking_type and service and date and time):
+            messagebox.showerror("Error", "All fields are required.")
+            return
+        if not verify_booking_details(date, time):
+            return
+        try:
+            cursor.execute("INSERT INTO bookings (user_email, booking_type, service, date, time) VALUES (?, ?, ?, ?, ?)", (user_email, booking_type, service, date, time))
+            db.commit()
+            messagebox.showinfo("Success", "Booking confirmed!")
+        except sqlite3.Error as e:
+            messagebox.showerror("Database Error", f"Failed to book: {e}")
+
+    tk.Button(booking_window, text="Confirm Booking", command=book_service).pack(pady=10)
+    tk.Button(booking_window, text="Logout", command=lambda: return_to_login(booking_window)).pack(pady=10)
