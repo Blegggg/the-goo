@@ -1,0 +1,46 @@
+# Monthly Energy Usage Calculation
+def calculate_monthly_energy_usage(power_rating, daily_hours, days_in_month):
+    try:
+        power_rating = float(power_rating)  # Convert power rating to float (in kW)
+        daily_hours = float(daily_hours)  # Convert daily hours to float
+        days_in_month = int(days_in_month)  # Convert days in month to int
+
+        # Calculate energy usage per day (kWh)
+        daily_energy_usage = power_rating * daily_hours
+        # Calculate total energy usage over the month (kWh)
+        monthly_energy_usage = daily_energy_usage * days_in_month
+
+        return monthly_energy_usage
+    except ValueError:
+        messagebox.showerror("Error", "Invalid input for power rating or daily usage. Please enter numeric values.")
+        return None
+
+# Energy Usage Calculation Page
+def open_energy_usage_page():
+    energy_window = tk.Toplevel()
+    energy_window.title("Energy Usage Calculation")
+    energy_window.geometry("300x300")
+
+    tk.Label(energy_window, text="Enter Power Rating (in kW):").pack(pady=5)
+    power_rating_entry = tk.Entry(energy_window)
+    power_rating_entry.pack(pady=5)
+
+    tk.Label(energy_window, text="Enter Daily Usage (in hours):").pack(pady=5)
+    daily_hours_entry = tk.Entry(energy_window)
+    daily_hours_entry.pack(pady=5)
+
+    tk.Label(energy_window, text="Enter Number of Days in Month:").pack(pady=5)
+    days_in_month_entry = tk.Entry(energy_window)
+    days_in_month_entry.pack(pady=5)
+
+    def calculate_usage():
+        power_rating = power_rating_entry.get()
+        daily_hours = daily_hours_entry.get()
+        days_in_month = days_in_month_entry.get()
+
+        monthly_energy_usage = calculate_monthly_energy_usage(power_rating, daily_hours, days_in_month)
+        if monthly_energy_usage is not None:
+            messagebox.showinfo("Energy Usage", f"Total Energy Usage for the Month: {monthly_energy_usage} kWh")
+
+    tk.Button(energy_window, text="Calculate Monthly Energy Usage", command=calculate_usage).pack(pady=10)
+    tk.Button(energy_window, text="Back", command=energy_window.destroy).pack(pady=5)
