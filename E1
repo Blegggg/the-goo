@@ -1,0 +1,9 @@
+def login_user():
+    email = email_entry.get()
+    password = password_entry.get()
+    cursor.execute("SELECT * FROM users WHERE email = ? AND password = ?", (email, password))
+    if cursor.fetchone():
+        messagebox.showinfo("Success", "Login successful!")
+        open_booking_page(email)  # <-- RIGHT HERE
+    else:
+        messagebox.showerror("Error", "Incorrect email or password.")
