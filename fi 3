@@ -1,0 +1,48 @@
+# Homepage after Login with Image Banner
+def open_homepage(user_email):
+    home = tk.Toplevel()
+    home.title("Homepage")
+    home.geometry("400x300")
+
+    # Welcome Label
+    tk.Label(home, text=f"Welcome, {user_email}", font=("Arial", 12)).pack(pady=10)
+
+    # Image Banner (spanning across the top of the window)
+    try:
+        # Open the kanye.JFIF image (ensure you have this image file in your project directory)
+        banner_image = Image.open("kanye.JFIF")  # Change this line to use kanye.JFIF
+        banner_image = banner_image.resize((400, 100))  # Resize to fit the window
+        banner_photo = ImageTk.PhotoImage(banner_image)
+
+        banner_label = tk.Label(home, image=banner_photo)
+        banner_label.image = banner_photo  # Keep a reference to the image object
+        banner_label.pack(pady=10)
+    except Exception as e:
+        print("Error loading banner image:", e)
+    
+    # Buttons below the banner
+    tk.Button(home, text="Make a Booking", command=lambda: open_booking_page(user_email)).pack(pady=10)
+    tk.Button(home, text="Calculate Energy Usage", command=open_energy_usage_page).pack(pady=10)
+
+# Register User
+def register_user():
+    name = name_entry.get()
+    password = password_entry.get()
+    email = email_entry.get()
+
+    if not name.isalpha():
+        messagebox.showerror("Error", "Name must contain only letters.")
+        return
+    if len(password) < 6:
+        messagebox.showerror("Error", "Password must be at least 6 characters long.")
+        return
+    if "@" not in email or "." not in email:
+        messagebox.showerror("Error", "Invalid email format.")
+        return
+
+    try:
+        cursor.execute("INSERT INTO users (name, password, email) VALUES (?, ?, ?)", (name, password, email))
+        db.commit()
+        messagebox.showinfo("Success", "Registered successfully!")
+    except sqlite3.IntegrityError:
+        messagebox.showerror("Error", "Email already registered.")
