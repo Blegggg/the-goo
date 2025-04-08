@@ -1,0 +1,17 @@
+def open_booking_page(*user_email):
+    user_email = user_email[0]  # Unpack tuple to get the actual email string
+    root.withdraw()
+    booking_window = tk.Toplevel()
+    booking_window.title("Booking Page")
+    booking_window.geometry("350x400")
+
+    tk.Label(booking_window, text="Choose Booking Type:").pack(pady=5)
+    booking_types = ["Installation", "Consultation"]
+    booking_type_var = tk.StringVar()
+    booking_type_dropdown = ttk.Combobox(booking_window, textvariable=booking_type_var, values=booking_types)
+    booking_type_dropdown.pack(pady=5)
+
+    tk.Label(booking_window, text="Choose a Service:").pack(pady=5)
+    service_var = tk.StringVar()
+    service_dropdown = ttk.Combobox(booking_window, textvariable=service_var)
+    service_dropdown.pack(pady=5)
