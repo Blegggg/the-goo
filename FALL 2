@@ -1,0 +1,46 @@
+def open_simple_booking(user_email):
+    db = connect_db()
+    cursor = db.cursor()
+
+    win = tk.Toplevel()
+    win.title("Simple Booking Page")
+    win.geometry("300x300")
+
+    tk.Label(win, text="Booking Type:").pack(pady=5)
+    type_entry = tk.Entry(win)
+    type_entry.pack(pady=5)
+
+    tk.Label(win, text="Service:").pack(pady=5)
+    service_entry = tk.Entry(win)
+    service_entry.pack(pady=5)
+
+    tk.Label(win, text="Date (DD-MM-YYYY):").pack(pady=5)
+    date_entry = tk.Entry(win)
+    date_entry.pack(pady=5)
+
+    tk.Label(win, text="Time (HH:MM):").pack(pady=5)
+    time_entry = tk.Entry(win)
+    time_entry.pack(pady=5)
+
+    def save_booking():
+        btype = type_entry.get()
+        service = service_entry.get()
+        date = date_entry.get()
+        time = time_entry.get()
+
+        if not all([btype, service, date, time]):
+            messagebox.showerror("Error", "Please fill in all fields.")
+            return
+
+        try:
+            cursor.execute("INSERT INTO bookings (user_email, booking_type, service, date, time) VALUES (?, ?, ?, ?, ?)",
+                           (user_email, btype, service, date, time))
+            db.commit()
+            messagebox.showinfo("Success", "Booking saved!")
+            win.destroy()
+        except Exception as e:
+            messagebox.showerror("Database Error", str(e))
+
+    tk.Button(win, text="Submit Booking", command=save_booking).pack(pady=10)
+
+    win.mainloop()
