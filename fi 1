@@ -1,0 +1,56 @@
+import sqlite3
+import tkinter as tk
+from tkinter import messagebox, ttk
+from PIL import Image, ImageTk  # Import Pillow library for image handling
+import re
+
+# Connect to SQLite Database
+def connect_to_db():
+    try:
+        return sqlite3.connect("booking.db")
+    except sqlite3.Error as e:
+        messagebox.showerror("Database Error", f"Failed to connect to database: {e}")
+        return None
+
+db = connect_to_db()
+cursor = db.cursor()
+
+# Create tables if they don't exist
+try:
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        password TEXT NOT NULL,
+        email TEXT UNIQUE NOT NULL
+    )
+    """)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS bookings (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_email TEXT NOT NULL,
+        booking_type TEXT NOT NULL,
+        service TEXT NOT NULL,
+        date TEXT NOT NULL,
+        time TEXT NOT NULL,
+        energy_usage REAL,
+        FOREIGN KEY (user_email) REFERENCES users(email)
+    )
+    """)
+    db.commit()
+except sqlite3.Error as e:
+    messagebox.showerror("Database Error", f"Failed to create tables: {e}")
+
+# Validate date and time format
+def verify_booking_details(date, time):
+    if not re.match(r"^\d{2}-\d{2}-\d{4}$", date):
+        messagebox.showerror("Error", "Invalid date format. Use DD-MM-YYYY.")
+        return False
+    day, month, year = map(int, date.split("-"))
+    if not (1 <= day <= 31 and 1 <= month <= 12 and year >= 2025):
+        messagebox.showerror("Error", "Enter a valid future date (from 2025).")
+        return False
+    if not re.match(r"^([01]\d|2[0-3]):([0-5]\d)$", time):
+        messagebox.showerror("Error", "Invalid time format. Use HH:MM (24-hour format).")
+        return False
+    return True
