@@ -1,0 +1,87 @@
+def return_to_home(current_window):
+    current_window.destroy()
+    homepage_window.deiconify()
+
+# HOME PAGE after login
+def open_home_page(user_email):
+    global homepage_window
+    root.withdraw()
+    homepage_window = tk.Toplevel()
+    homepage_window.title("Home Page")
+    homepage_window.geometry("300x200")
+
+    tk.Label(homepage_window, text=f"Welcome, {user_email}!", font=("Arial", 14)).pack(pady=20)
+    tk.Button(homepage_window, text="Go to Booking Page", command=lambda: open_booking_page(user_email)).pack(pady=10)
+    tk.Button(homepage_window, text="Logout", command=lambda: return_to_login(homepage_window)).pack(pady=10)
+
+# Return to Login
+def return_to_login(current_window):
+    current_window.destroy()
+    root.deiconify()
+
+# Register user
+def register_user():
+    name = name_entry.get()
+    password = password_entry.get()
+    email = email_entry.get()
+    if not name.isalpha():
+        messagebox.showerror("Error", "Name must contain only letters.")
+        return
+    if len(password) < 6:
+        messagebox.showerror("Error", "Password must be at least 6 characters long.")
+        return
+    if "@" not in email or "." not in email:
+        messagebox.showerror("Error", "Invalid email format.")
+        return
+    try:
+        cursor.execute("INSERT INTO users (name, password, email) VALUES (?, ?, ?)", (name, password, email))
+        db.commit()
+        messagebox.showinfo("Success", "Registered successfully!")
+    except sqlite3.IntegrityError:
+        messagebox.showerror("Error", "Email already registered.")
+
+# Login user
+def login_user():
+    email = email_entry.get()
+    password = password_entry.get()
+    cursor.execute("SELECT * FROM users WHERE email = ? AND password = ?", (email, password))
+    if cursor.fetchone():
+        messagebox.showinfo("Success", "Login successful!")
+        open_home_page(email)
+    else:
+        messagebox.showerror("Error", "Incorrect email or password.")
+
+# Information Page (No images)
+def open_info_page():
+    page = tk.Toplevel()
+    page.title("Information")
+    page.geometry("320x500")
+
+    tk.Label(page, text="Information Page", font=("Arial", 16, "bold")).pack(pady=10)
+    tk.Label(page, text="Topic 1: EV Charging Info", wraplength=300).pack(pady=5)
+    tk.Label(page, text="Topic 2: HEM Systems Overview", wraplength=300).pack(pady=5)
+    tk.Label(page, text="Topic 3: Consultation Details", wraplength=300).pack(pady=5)
+    tk.Button(page, text="Back", command=page.destroy, bg="lightgreen").pack(pady=10)
+
+# Main Login UI
+root = tk.Tk()
+root.title("User Authentication")
+root.geometry("300x300")
+
+tk.Label(root, text="Sign Up / Login").pack(pady=10)
+name_entry = tk.Entry(root, width=30)
+tk.Label(root, text="Name").pack()
+name_entry.pack()
+password_entry = tk.Entry(root, width=30, show="*")
+tk.Label(root, text="Password").pack()
+password_entry.pack()
+email_entry = tk.Entry(root, width=30)
+tk.Label(root, text="Email").pack()
+email_entry.pack()
+
+tk.Button(root, text="Sign Up", command=register_user).pack(pady=5)
+tk.Button(root, text="Login", command=login_user).pack(pady=5)
+tk.Button(root, text="Info", command=open_info_page).pack(pady=5)
+
+root.mainloop()
+db.close()
